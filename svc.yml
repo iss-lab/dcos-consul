@@ -64,7 +64,8 @@ pods:
         cmd: |
           chmod +x consul
           ./bootstrap
-          ARGS="agent -server -config-file $MESOS_SANDBOX/consul.json -bootstrap-expect={{NODE_COUNT}} -node "consul-$POD_INSTANCE_INDEX-node.$FRAMEWORK_HOST" -data-dir=$MESOS_SANDBOX/consul-data -ui"
+          export FRAMEWORK_SHORTNAME=$(echo "$FRAMEWORK_NAME" | tr '/' '-')
+          ARGS="agent -server -config-file $MESOS_SANDBOX/consul.json -bootstrap-expect={{NODE_COUNT}} -node "consul-$POD_INSTANCE_INDEX-node-$FRAMEWORK_SHORTNAME" -data-dir=$MESOS_SANDBOX/consul-data -ui"
           for i in {1..{{NODE_COUNT}}}
           do
             if [ $POD_INSTANCE_INDEX != $(( $i - 1 )) ]; then

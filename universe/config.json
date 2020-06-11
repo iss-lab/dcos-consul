@@ -107,19 +107,19 @@
           "title": "CPU count",
           "description": "consul pod CPU requirements",
           "type": "number",
-          "default": 0.5
+          "default": 2
         },
         "mem": {
           "title": "Memory size (MB)",
           "description": "consul pod mem requirements (in MB)",
           "type": "integer",
-          "default": 128
+          "default": 1024
         },
         "disk": {
           "title": "Disk size (MB)",
           "description": "consul pod persistent disk requirements (in MB)",
           "type": "integer",
-          "default": 500
+          "default": 1000
         },
         "disk_type": {
           "title": "Disk type [ROOT, MOUNT]",

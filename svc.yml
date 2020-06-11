@@ -64,16 +64,14 @@ pods:
         cmd: |
           chmod +x consul
           ./bootstrap
-          if [ -f $MESOS_SANDBOX/consul-data/node-id ]; then
-            echo "Delaying start to give rest of the cluster time to clear old node state"
-            sleep 10  # Wait for old node to loose registration
-          fi
-          ARGS="agent -server -config-file $MESOS_SANDBOX/consul.json -bootstrap-expect={{NODE_COUNT}} -node $TASK_NAME -data-dir=$MESOS_SANDBOX/consul-data -ui"
-          if [ $POD_INSTANCE_INDEX == 0 ]; then
-            ARGS="$ARGS -retry-join consul-1-node.$FRAMEWORK_HOST"
-          else
-            ARGS="$ARGS -retry-join consul-0-node.$FRAMEWORK_HOST"
-          fi
+          ARGS="agent -server -config-file $MESOS_SANDBOX/consul.json -bootstrap-expect={{NODE_COUNT}} -node "consul-$POD_INSTANCE_INDEX-node.$FRAMEWORK_HOST" -data-dir=$MESOS_SANDBOX/consul-data -ui"
+          for i in {1..{{NODE_COUNT}}}
+          do
+            if [ $POD_INSTANCE_INDEX != $(( $i - 1 )) ]; then
+              ARGS="$ARGS -retry-join consul-$(( $i - 1 ))-node.$FRAMEWORK_HOST"
+            fi
+          done
+
           exec $MESOS_SANDBOX/consul $ARGS
         configs:
           consul:
@@ -81,22 +79,6 @@ pods:
             dest: consul.json
         cpus: {{NODE_CPUS}}
         memory: {{NODE_MEM}}
-        {{#TASKCFG_ALL_PORT_HTTP_ENABLED}}
-        readiness-check:
-          cmd: |
-           curl http://$TASK_NAME.$FRAMEWORK_HOST:$PORT_HTTP/v1/status/leader 2>/dev/null | grep -E '".+"'
-          interval: 10
-          delay: 10
-          timeout: 5
-        health-check:
-          cmd: |
-           curl http://$TASK_NAME.$FRAMEWORK_HOST:$PORT_HTTP/v1/status/leader 2>/dev/null | grep -E '".+"'
-          interval: 10
-          grace-period: 20
-          delay: 20
-          timeout: 5
-          max-consecutive-failures: 10
-        {{/TASKCFG_ALL_PORT_HTTP_ENABLED}}
         volume:
           path: "consul-data"
           type: {{NODE_DISK_TYPE}}

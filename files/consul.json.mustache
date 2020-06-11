@@ -1,7 +1,7 @@
 {
   "reconnect_timeout": "8h",
   "reconnect_timeout_wan": "8h",
-  "leave_on_terminate": true,
+  "leave_on_terminate": false,
   "rejoin_after_leave": true,
   "advertise_addr": "{{MESOS_CONTAINER_IP}}",
   "client_addr": "127.0.0.1 {{MESOS_CONTAINER_IP}}",
@@ -13,6 +13,10 @@
   {{/SECURITY_TRANSPORT_ENCRYPTION_ENABLED}}
   "encrypt": "{{SECURITY_GOSSIP_ENCRYPTION_KEY}}",
   "ports": {
+    "sidecar_min_port": 0,
+    "sidecar_max_port": 0,
+    "expose_min_port": 0,
+    "expose_max_port": 0,
     {{#PORT_DNS_ENABLED}}
     "dns": {{PORT_DNS}},
     {{/PORT_DNS_ENABLED}}
@@ -45,5 +49,8 @@
     {{/PORT_SERF_WAN_ENABLED}}
     "serf_lan": {{PORT_SERF_LAN}},
     "server": {{PORT_SERVER}}
+  },
+  "performance": {
+    "raft_multiplier": 10
   }
 }

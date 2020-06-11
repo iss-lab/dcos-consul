@@ -1,16 +1,16 @@
 
 {
   "packagingVersion": "4.0",
-  "upgradesFrom": [],
-  "downgradesTo": [],
-  "minDcosReleaseVersion": "1.11",
+  "upgradesFrom": ["%(upgrades-from)s"],
+  "downgradesTo": ["%(downgrades-to)s"],
+  "minDcosReleaseVersion": "1.13",
   "name": "consul",
-  "version": "{{package-version}}",
-  "maintainer": "https://github.com/maibornwolff/dcos-consul",
+  "version": "%(package-version)s",
+  "maintainer": "%(maintainer)s",
   "description": "Consul cluster in HA mode",
   "selected": false,
   "framework": true,
-  "tags": ["consul"],
-  "postInstallNotes": "DC/OS Consul is being installed!\n\n\tDocumentation: https://github.com/maibornwolff/dcos-consul\n\tIssues: https://github.com/maibornwolff/dcos-consul",
-  "postUninstallNotes": "DC/OS Consul is being uninstalled."
+  "tags": ["0.55.2", "consul"],
+  "postInstallNotes": "DC/OS consul is being installed!\n\n\tDocumentation: %(documentation-path)s\n\tIssues: %(issues-path)s",
+  "postUninstallNotes": "DC/OS consul is being uninstalled."
 }

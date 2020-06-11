@@ -1,4 +1,15 @@
-# Consul for DC/OS
+# dcos-consul
+
+## DC/OS Setup
+
+```
+wget https://github.com/iss-lab/dcos-consul/releases/download/v1.7.3/consul-repo.json
+mc mb minio-dcos/artifacts
+mc policy download minio-dcos/artifacts
+mc cp --attr "Content-Type=application/vnd.dcos.universe.repo+json" consul-repo.json minio-dcos/artifacts/consul/
+dcos package repo add consul-repo --index=0 http://MINIO_HOST/artifacts/consul/consul-repo.json
+```
+
 
 [Consul](https://www.consul.io) is an open-source tool for service discovery and configuration. This project aims to deploy consul in a distributed and high-availability manner on [DC/OS](https://dcos.io) clusters and provides a package for easy installation and management.
 
